@@ -1,22 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
 
 function App() {
+
+ const [likes, setLikes] = useState(0);
+ const[value, setValue] = useState('Какой-то текст');
+
+ const increment = () =>{
+  setLikes(likes + 1);
+ }
+
+ const decrement = () =>{
+  setLikes(likes - 1)
+ }
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+       <div>
+        <button onClick={increment}>Увеличить</button>
+        <button onClick={decrement}>Уменьшить</button>
+        <div>
+          {likes }
+        </div>
+
+        <div>
+          <h1>{value}</h1>
+          <input 
+            value={value}
+            onChange={event => setValue(event.target.value)}
+
+          >
+          
+
+          </input>
+        </div>
+       </div>
       </header>
     </div>
   );
