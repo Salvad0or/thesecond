@@ -1,4 +1,5 @@
 import { useState } from "react"
+import style from '../counter/style.module.css'
 
 const Counter = (props) => {
 
@@ -9,7 +10,7 @@ const Counter = (props) => {
     }
 
     return(
-        <div>
+        <div className={style.container}>
             <div>
                 {count}
             </div>

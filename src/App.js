@@ -1,9 +1,10 @@
-import Counter from './components/Counter'
+import Counter from './components/counter/Counter'
+
 
 function App() {
 
   return(
-    <div>
+    <div className='App'>
       <Counter/>
     </div>
   )
