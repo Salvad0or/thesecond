@@ -18,6 +18,8 @@ function App() {
 
     setPosts([...posts, {...post, id: posts.length + 1}])
 
+    setTitle({title : '',description : ''})
+
   }
 
   return (
