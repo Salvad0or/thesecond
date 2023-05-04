@@ -1,0 +1,7 @@
+.myBut{
+    font-size: 15px;
+    padding: 10px;
+    background-color: orange;
+    cursor:pointer;
+    border: 1px solid gray;
+}

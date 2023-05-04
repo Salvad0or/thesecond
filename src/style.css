@@ -4,7 +4,10 @@
     margin-right: auto;
 }
 
-.App{
-   
+.postDiv{
+    margin-top: 25px;
+}
+
+.Inputs{
     border: 1px solid gray;
 }
