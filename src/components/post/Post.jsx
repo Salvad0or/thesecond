@@ -1,5 +1,6 @@
 import PostItem from './PostItem'
 
+
 const Post = ({posts, remove})=> {
   
     return (
@@ -11,5 +12,6 @@ const Post = ({posts, remove})=> {
         </div>
     )
 }
+
 
 export default Post;
