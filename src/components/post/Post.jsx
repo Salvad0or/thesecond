@@ -1,21 +1,15 @@
-import style from './style.module.css'
-const Post = (props) => {
-    
-    return(
-        <div className={style.container}>
-            <div>
-                <strong>{props.post.id}</strong>
-                <strong>{props.post.title}</strong>
-            </div>
-            <div>
-                {props.post.description}
-            </div>
+import PostItem from './PostItem'
 
-            <div>
-                <button>Удолить</button>
-            </div>
+const Post = ({posts, remove})=> {
+  
+    return (
+        
+        <div>
+            {posts.map(p =>
+                <PostItem post={p} remove = {remove}/>
+            )}
         </div>
     )
 }
 
-export default Post
+export default Post;
