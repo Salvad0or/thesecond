@@ -1,15 +1,15 @@
 import MainButton from './UI/Buttons/MainButton';
 import MyInput from './UI/Inputs/MyInput';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 const PostForm = ({createPost}) => {
 
     
-    const [post, setTitle] = useState({ title: '', description: '' });
+    const [post, setTitle] = useState({ title: '', description: '', id : 0 });
 
     const addNewPost = () => {
        
-        let newPost = { ...post, id: 5 }
+        let newPost = { ...post }
 
         createPost(newPost)
 
