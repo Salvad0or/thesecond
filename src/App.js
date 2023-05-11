@@ -3,6 +3,8 @@ import { useMemo, useState } from 'react';
 import Post from './components/post/Post'
 import PostForm from './components/post/PostForm';
 import PostFilter from './components/post/PostFilter';
+import ModalWindow from './components/post/UI/MyModal/ModalWindow';
+import MainButton from './components/post/UI/Buttons/MainButton';
 
 
 function App() {
@@ -13,11 +15,16 @@ function App() {
     { id: 2, title: 'Зет', description: 'абс' },
     { id: 3, title: 'Яша', description: 'вкс' },
   ])
+  const [filter, setFilter] = useState({ sort: '', query: '' }); // filter будет содержать два объекта. Алгоритм сортировки и поисковая строка.
 
+  const [modal, setModal] = useState(false); // состояние модального окна
+
+  //#region Создание и удаление поста
 
   const createPost = (newPost) => {
     newPost.id = posts.length + 1;
     setPosts([...posts, newPost])
+    setModal(false);
   }
 
   const removePost = (post) => {
@@ -26,8 +33,9 @@ function App() {
 
   }
 
-  const [filter, setFilter] = useState({sort : '' , query :''}); // filter будет содержать два объекта. Алгоритм сортировки и поисковая строка.
+  //#endregion
 
+  //#region Сортировка постов
   const sortedPost = useMemo(() => {
     if (filter.sort) {
       return [...posts].sort((a, b) => a[filter.sort].localeCompare(b[filter.sort]))
@@ -43,18 +51,28 @@ function App() {
 
   }, [filter.query, sortedPost])
 
+  //#endregion
+  
+  
   return (
     <div className='App'>
-      <div className='Inputs'>
-        <PostForm createPost={createPost} />
-      </div>
-      <PostFilter filter={filter} setFilter={setFilter} />
 
-      <div className='postDiv'>
+      <MainButton onClick = {() => setModal(true)}>
+        Создать пост
+      </MainButton> 
+
+      <ModalWindow 
+      visible={modal} // передаем состояние и метод
+      setVisible={setModal}>
+        <PostForm className='Inputs' createPost={createPost} />
+      </ModalWindow>
+
+
+      <PostFilter filter={filter} setFilter={setFilter} />
 
       <Post className='postDiv' posts={sortedAndSearchedPosts} remove={removePost} />
 
-      </div>
+
     </div>
   )
 
