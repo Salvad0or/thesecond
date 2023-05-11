@@ -1,11 +1,12 @@
 
-import { useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import Post from './components/post/Post'
-
 import PostForm from './components/post/PostForm';
-import MySelect from './components/post/UI/Select/MySelect';
+import PostFilter from './components/post/PostFilter';
+
 
 function App() {
+
 
   const [posts, setPosts] = useState([
     { id: 1, title: 'Гена', description: 'итр' },
@@ -13,25 +14,9 @@ function App() {
     { id: 3, title: 'Яша', description: 'вкс' },
   ])
 
-  const [selectedSort, setSelectedSort] = useState('');
-
-  const sortPosts = (eventTargetValue) => {
-    setSelectedSort(eventTargetValue);
-    // функция пост не возвращяет новый массив, а мутирует тот массив к которому функция была применена,
-    // состояния на прямую изменять нельзя
-
-    setPosts([...posts].sort((a,b) => a[eventTargetValue].localeCompare(b[eventTargetValue])))
-
-    // поработать над сортировкой массивов
-    // сделать с нуля еще раз select, полностью самому
-    // попробовать другую сортировку, пусть будет уродливее но понятнее тебе лично
-
-    // rafce
-  }
 
   const createPost = (newPost) => {
-    let lastId = posts.pop();
-    newPost.id = lastId.id + 1;
+    newPost.id = posts.length + 1;
     setPosts([...posts, newPost])
   }
 
@@ -41,38 +26,33 @@ function App() {
 
   }
 
+  const [filter, setFilter] = useState({sort : '' , query :''}); // filter будет содержать два объекта. Алгоритм сортировки и поисковая строка.
 
+  const sortedPost = useMemo(() => {
+    if (filter.sort) {
+      return [...posts].sort((a, b) => a[filter.sort].localeCompare(b[filter.sort]))
+    }
+
+    return posts;
+
+  }, [filter.sort, posts]) // мы следим за методом сортировки и за самими постами, если они изменятся - массив будет сортироваться
+
+  const sortedAndSearchedPosts = useMemo(() => {
+
+    return sortedPost.filter(post => post.title.toLowerCase().includes(filter.query))
+
+  }, [filter.query, sortedPost])
 
   return (
     <div className='App'>
       <div className='Inputs'>
         <PostForm createPost={createPost} />
       </div>
-
-      <MySelect
-        defaultValue={'Сортировка'}
-        value={selectedSort}
-        onChange={sortPosts}
-        options={
-          [
-            { value: 'title', name: 'По названию' },
-            { value: 'description', name: 'По описанию' }
-          ]
-
-        }
-      />
+      <PostFilter filter={filter} setFilter={setFilter} />
 
       <div className='postDiv'>
 
-        {
-          posts.length !== 0
-            ?
-            <Post posts={posts} remove={removePost} />
-            :
-            <div>
-              Постов не найдено
-            </div>
-        }
+      <Post className='postDiv' posts={sortedAndSearchedPosts} remove={removePost} />
 
       </div>
     </div>
