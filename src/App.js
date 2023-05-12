@@ -3,21 +3,21 @@ import { useMemo, useState } from 'react';
 import Post from './components/post/Post'
 import PostForm from './components/post/PostForm';
 import PostFilter from './components/post/PostFilter';
-import ModalWindow from './components/post/UI/MyModal/ModalWindow';
+
 import MainButton from './components/post/UI/Buttons/MainButton';
+import MyModalWindow from './components/post/UI/MyModal/MyModalWindow';
+import { UsePosts } from './components/post/hooks/usePosts';
 
 
 function App() {
 
 
-  const [posts, setPosts] = useState([
-    { id: 1, title: 'Гена', description: 'итр' },
-    { id: 2, title: 'Зет', description: 'абс' },
-    { id: 3, title: 'Яша', description: 'вкс' },
-  ])
-  const [filter, setFilter] = useState({ sort: '', query: '' }); // filter будет содержать два объекта. Алгоритм сортировки и поисковая строка.
+  const [posts, setPosts] = useState([])
+  
+  //#region  Модальное окно
+  const [isActive, setModal] = useState(false); // состояние модального окна
 
-  const [modal, setModal] = useState(false); // состояние модального окна
+  //#endregion
 
   //#region Создание и удаление поста
 
@@ -36,20 +36,8 @@ function App() {
   //#endregion
 
   //#region Сортировка постов
-  const sortedPost = useMemo(() => {
-    if (filter.sort) {
-      return [...posts].sort((a, b) => a[filter.sort].localeCompare(b[filter.sort]))
-    }
-
-    return posts;
-
-  }, [filter.sort, posts]) // мы следим за методом сортировки и за самими постами, если они изменятся - массив будет сортироваться
-
-  const sortedAndSearchedPosts = useMemo(() => {
-
-    return sortedPost.filter(post => post.title.toLowerCase().includes(filter.query))
-
-  }, [filter.query, sortedPost])
+  const [filter, setFilter] = useState({ sort: '', query: '' }); // filter будет содержать два объекта. Алгоритм сортировки и поисковая строка.
+  const sortedAndSearchedPosts = UsePosts(posts, filter.sort,filter.query)
 
   //#endregion
   
@@ -61,12 +49,14 @@ function App() {
         Создать пост
       </MainButton> 
 
-      <ModalWindow 
-      visible={modal} // передаем состояние и метод
-      setVisible={setModal}>
+  
+      <MyModalWindow
+      isActive={isActive}
+      setActive={setModal}>
         <PostForm className='Inputs' createPost={createPost} />
-      </ModalWindow>
+      </MyModalWindow>
 
+     
 
       <PostFilter filter={filter} setFilter={setFilter} />
 

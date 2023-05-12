@@ -1,0 +1,26 @@
+.MyWindow{
+    
+    position:fixed;
+    display: none;
+    top:0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0,0,0,0.5);
+
+}
+
+.MyWindowContent{
+    min-width: 500px;
+    border-radius: 15px;
+    background-color: aliceblue;
+    padding: 25px;
+    
+}
+
+.MyWindow.active{
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
